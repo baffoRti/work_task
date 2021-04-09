@@ -5,11 +5,7 @@ from django.core import serializers
 
 
 def index(request):
-    messages = Mess.objects.order_by("-date")
-    context = {
-        'messages': messages
-    }
-    return render(request, 'page_mes/index.html', context)
+    return render(request, 'page_mes/index.html')
 
 
 def get_messages(request):
@@ -20,4 +16,8 @@ def get_messages(request):
 
 
 def mark_read(request):
-    return
+    cur_id = int(request.GET.get("id", 0))
+    message = Mess.objects.get(id=cur_id)
+    message.check = True
+    message.save()
+    return HttpResponse("Done")
